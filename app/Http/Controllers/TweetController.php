@@ -5,21 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Requests\TweetCreateRequest; 
 use Validator;
 use App\Models\Tweet; // Import the Tweet model
 
 class TweetController extends Controller{
 
-    public function store(Request $request)
+    public function store(TweetCreateRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'text' => 'required|max:280',
-            'media' => 'nullable|file|max:2048', // Example: Allowing file uploads up to 2MB
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
 
         if ($request->hasFile('media')) {
             // Handle file upload
@@ -38,7 +31,7 @@ class TweetController extends Controller{
         return response()->json($tweet, 201);
     }
 
-    public function edit(Request $request, $id)
+    public function edit(TweetCreateRequest $request, $id)
     {
         $tweet = Tweet::findorfail($id);
 
@@ -49,15 +42,6 @@ class TweetController extends Controller{
         // Check if the authenticated user owns the tweet
         if (auth()->user()->id !== $tweet->user_id) {
             return response()->json(['message' => 'Unauthorized'], 403);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'text' => 'required|max:280',
-            'media' => 'nullable|file|max:2048',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
         }
 
         if ($request->hasFile('media')) {
