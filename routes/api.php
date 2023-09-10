@@ -2,9 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\TweetController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FollowerController;
 
 
 
@@ -25,12 +25,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Authentication Routes
 
-// Route::post('/login', 'AuthController@login');
-Route::post('/login', [AuthController::class, 'login']);
-// Route::post('/register', 'AuthController@register');
-Route::post('/register', [AuthController::class, 'register']);
+// Login User
+Route::post('/login', [UserController::class, 'login']);
+// Register User
+Route::post('/register', [UserController::class, 'register']);
 //Logout the User and delete Token
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
 
 // Create a tweet
@@ -52,19 +52,19 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::prefix('profile')->group(function () {
         // Follow a user
-        Route::post('follow/{user}', [ProfileController::class, 'follow']);
+        Route::post('follow/{user}', [FollowerController::class, 'follow']);
 
         // Unfollow a user
-        Route::post('unfollow/{user}', [ProfileController::class, 'unfollow']);
+        Route::post('unfollow/{user}', [FollowerController::class, 'unfollow']);
 
         // List of followed users' tweets
-        Route::get('following-tweets', [ProfileController::class, 'following']);
+        Route::get('following-tweets', [FollowerController::class, 'following']);
 
         // List of user's own tweets
-        Route::get('tweets', [ProfileController::class, 'tweets']);
+        Route::get('tweets', [FollowerController::class, 'tweets']);
 
         // Suggested users to follow
-        Route::get('suggested-users', [ProfileController::class, 'suggestedUsers']);
+        Route::get('suggested-users', [FollowerController::class, 'suggestedUsers']);
 
     });
 });

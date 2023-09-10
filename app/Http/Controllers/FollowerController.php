@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Tweet; // Import the Tweet model
+use App\Models\Tweet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ProfileController extends Controller
+class FollowerController extends Controller
 {
     // Follow a user
     public function follow(User $user)

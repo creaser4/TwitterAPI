@@ -10,7 +10,7 @@ use App\Http\Requests\LoginUserRequest;
 use Validator;
 use App\Models\User;
 
-class AuthController extends Controller
+class UserController extends Controller
 {
     public function register(RegisterUserRequest $request)
     {
