@@ -56,6 +56,13 @@ return [
             'throw' => false,
         ],
 
+        'media' => [
+        'driver' => 'local', // You can use 's3' or other drivers if needed
+        'root' => storage_path('app/media'), // Specify the root path for media storage
+        'url' => env('APP_URL').'/storage',
+        'visibility' => 'public',
+    ],
+
     ],
 
     /*

@@ -50,7 +50,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
 
 //User Profile Routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::prefix('profile')->group(function () {
+    Route::prefix('Follower')->group(function () {
         // Follow a user
         Route::post('follow/{user}', [FollowerController::class, 'follow']);
 
