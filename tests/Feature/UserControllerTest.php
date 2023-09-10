@@ -2,36 +2,44 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
+use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Illuminate\Support\Facades\Hash;
 
 class UserControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use WithFaker;
 
-    public function test_register_user()
+    public function test_successfully_sign_up_user()
     {
-        $userData = [
+        $this->assertDatabaseCount('users', 0);
+
+        $user = [
             'name' => 'Cedric Romasoc',
-            'email' => 'cedric@example.com',
             'password' => 'secret',
+            'email' => 'cedric@example.com',
         ];
 
-        $response = $this->postJson('/api/register', $userData);
+        $response = $this->post('/api/register', $user);
 
-        $response->assertStatus(201)
-                 ->assertJson([
-                     'user' => [
-                         'name' => 'Cedric Romasoc',
-                         'email' => 'cedric@example.com',
-                     ],
-                 ]);
+        $actualToken = $response->json('plainTextToken');
+
+    $response->assertStatus(201)
+             ->assertJson([
+                 'user' => [
+                     'name' => 'Cedric Romasoc',
+                     'email' => 'cedric@example.com',
+                 ],
+                 'plainTextToken' => $actualToken, // Use the actual token value
+             ]);
     }
 
     public function test_login_user()
     {
-        $user = \App\Models\User::factory()->create([
+        $user = User::factory()->create([
             'email' => 'jane@example.com',
             'password' => bcrypt('password'), // Use the hashed password
         ]);
@@ -41,7 +49,7 @@ class UserControllerTest extends TestCase
             'password' => 'password',
         ];
 
-        $response = $this->postJson('/api/login', $loginData);
+        $response = $this->post('/api/login', $loginData);
 
         $response->assertStatus(200)
                  ->assertJsonStructure(['token']);
