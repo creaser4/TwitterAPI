@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\TweetCreateRequest; 
 use Validator;
-use App\Models\Tweet; // Import the Tweet model
+use App\Models\Tweet;
 
 class TweetController extends Controller{
 

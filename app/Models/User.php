@@ -45,11 +45,6 @@ class User extends Authenticatable
     ];
     // User.php
     
-public function profile()
-{
-    return $this->hasOne(Profile::class);
-}
-
 public function tweets()
 {
     return $this->hasMany(Tweet::class);
